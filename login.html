@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-app.js"></script>
+
+    <!-- Firebase Authentication and Firestore -->
+    <script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-firestore.js"></script>
+
+    <!-- FirebaseUI for Firebase Auth -->
+    <script src="https://www.gstatic.com/firebasejs/ui/4.7.2/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.7.2/firebase-ui-auth.css" />
+  </head>
+  <body>
+    <h1>Login Page</h1>
+    <div id="firebaseui-auth-container"></div>
+    <div id="loader">Loading...</div>
+    <div id="login-message"></div>
+
+    <script>
+      // Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyCfOx-E2bmIvtGMKYyEkI32dApLn6a5ZaY",
+        authDomain: "tsm-esports-nepal.firebaseapp.com",
+        databaseURL: "https://tsm-esports-nepal-default-rtdb.firebaseio.com",
+        projectId: "tsm-esports-nepal",
+        storageBucket: "tsm-esports-nepal.appspot.com",
+        messagingSenderId: "1048495763625",
+        appId: "1:1048495763625:web:fffb3f78d6e4b3537d39b8",
+        measurementId: "G-CGSK1HKTEZ"
+      };
+      
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.auth().onAuthStateChanged(function(user) {
+        if(user){
+          alert("You")
+        window.location.replace = "index.html"
+        }else{
+          window.location.replace = "login.html"
+        }
+      });
+      // FirebaseUI configuration
+      var uiConfig = {
+        signInSuccessUrl: 'otp.html',
+        signInOptions: [
+          firebase.auth.EmailAuthProvider.PROVIDER_ID,
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        ],
+        tosUrl: 'terms.html',
+        privacyPolicyUrl: 'privacy.html',
+        callbacks: {
+          signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+            // Handle successful login
+            var user = authResult.user;
+            document.getElementById('login-message').innerHTML = "You are logged in as " + user.email;
+            var verifyButton = document.createElement("button");
+            verifyButton.innerHTML = "Verify Phone Number";
+            verifyButton.onclick = function() {
+              window.location.href = "otp.html";
+              const database = firebase.database();
+            }
+            document.getElementById('login-message').appendChild(verifyButton);
+            return false;
+          },
+          uiShown: function() {
+            // Hide the loader when the FirebaseUI widget is rendered
+            document.getElementById('loader').style.display = 'none';
+          }
+        }
+      };
+
+      // Initialize the FirebaseUI widget using Firebase
+      var ui = new firebaseui.auth.AuthUI(firebase.auth());
+
+      // Show the FirebaseUI login widget
+      ui.start('#firebaseui-auth-container', uiConfig);
+    </script>
+  </body>
+</html>

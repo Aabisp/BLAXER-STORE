@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Number verification with OTP</title>
+<style>
+	.container {
+		width: 302px;
+		height: 175px;
+		position: absolute;
+		left: 0px;
+		right: 0px;
+		top: 0px;
+		bottom: 0px;
+		margin: auto;
+	}
+	#number, #verificationcode {
+		width: calc(100% - 24px);
+		padding: 10px;
+		font-size: 20px;
+		margin-bottom: 5px;
+		outline: none;
+	}
+	#recaptcha-container {
+		margin-bottom: 5px;
+	}
+	#send, #verify {
+		width: 100%;
+		height: 40px;
+		outline: none;
+	}
+	.p-conf, .n-conf {
+		width: calc(100% - 22px);
+		border: 2px solid green;
+		border-radius: 4px;
+		padding: 8px 10px;
+		margin: 4px 0px;
+		background-color: rgba(0, 249, 12, 0.5);
+		display: none;
+	}
+	.n-conf {
+		border-color: red;
+		background-color: rgba(255, 0, 4, 0.5);
+	}
+</style>
+</head>
+
+<body>
+	<div class="container">
+		<div id="sender">
+			<input type="text" id="number" placeholder="+923...">
+			<div id="recaptcha-container"></div>
+			<input type="button" id="send" value="Send" onClick="phoneAuth()">
+		</div>
+		<div id="verifier" style="display: none">
+			<input type="text" id="verificationcode" placeholder="OTP Code">
+			<input type="button" id="verify" value="Verify" onClick="codeverify()">
+			<div class="p-conf">Number Verified</div>
+			<div class="n-conf">OTP ERROR</div>
+		</div>
+	</div>
+<!--	add firebase SDK-->
+<script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-auth-compat.js"></script>
+<script>
+	// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+	apiKey: "AIzaSyCfOx-E2bmIvtGMKYyEkI32dApLn6a5ZaY",
+    authDomain: "tsm-esports-nepal.firebaseapp.com",
+    databaseURL: "https://tsm-esports-nepal-default-rtdb.firebaseio.com",
+    projectId: "tsm-esports-nepal",
+    storageBucket: "tsm-esports-nepal.appspot.com",
+    messagingSenderId: "1048495763625",
+    appId: "1:1048495763625:web:fffb3f78d6e4b3537d39b8",
+    measurementId: "G-CGSK1HKTEZ"
+};
+	firebase.initializeApp(firebaseConfig);
+render();
+function render(){
+	window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
+	recaptchaVerifier.render();
+}
+	// function for send message
+function phoneAuth() {
+	//get the number
+	var number = document.getElementById('number').value;
+	//phone number authentication function of firebase
+	//it takes two parameter first one is number,,,second one is recaptcha
+	firebase.auth().signInWithPhoneNumber(number, window.recaptchaVerifier).then(function (confirmationResult) {
+		//s is in lowercase
+		window.confirmationResult = confirmationResult;
+		coderesult = confirmationResult;
+		console.log(coderesult);
+		alert("OTP sent");
+		document.getElementById("sender").style.display = "none";
+		document.getElementById("verifier").style.display = "block";
+	}).catch(function (error) {
+		alert(error.message);
+	});
+}
+// codeverify function is used to verify the otp code given by the user
+function codeverify() {
+var code = document.getElementById('verificationcode').value;
+coderesult.confirm(code).then(function (result) {
+	window.location.href = "index.html";
+alert("Successfully registered");
+
+var user = result.user;
+console.log(user);
+document.getElementById("verifier").style.display = "none";
+document.getElementById("sender").style.display = "block";
+document.querySelector('.p-conf').style.display = "block";
+}).catch(function (error) {
+alert(error.message);
+document.querySelector('.n-conf').style.display = "block";
+});
+}
+</script>
+
+</body>
+</html> 
