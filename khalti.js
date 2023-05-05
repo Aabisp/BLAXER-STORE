@@ -1,6 +1,6 @@
   var config = {
       // replace the publicKey with yours
-      "publicKey": "test_public_key_7425ee4d8df1431485fff676691d7132",
+      "publicKey": "live_public_key_2ff739a57337486bb46e4d3d767e28e8",
       "productIdentity": "78882",
       "productName": "Dragon",
       "productUrl": "http://gameofthrones.wikia.com/wiki/Dragons",
