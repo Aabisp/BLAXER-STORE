@@ -1,11 +1,16 @@
-  var config = {
+var pname = document.getElementById("mem_name").value;
+var config = {
       // replace the publicKey with yours
       "publicKey": "live_public_key_2ff739a57337486bb46e4d3d767e28e8",
       "productIdentity": "78882",
-      "productName": "Dragon",
+      "productName": pname,
       "productUrl": "http://gameofthrones.wikia.com/wiki/Dragons",
       "paymentPreference": [
-          "KHALTI"
+          "KHALTI",
+        "EBANKING",
+                "MOBILE_BANKING",
+                "CONNECT_IPS",
+                "SCT",
       ],
       "eventHandler": {
           onSuccess(payload) {
